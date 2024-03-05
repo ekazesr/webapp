@@ -1,5 +1,5 @@
-resource "aws_key_pair" "tf-key-pair" {
-key_name = "tf-key-pair"
+resource "aws_key_pair" "test" {
+key_name = "test"
 public_key = tls_private_key.rsa.public_key_openssh
 }
 resource "tls_private_key" "rsa" {
@@ -8,7 +8,7 @@ rsa_bits  = 4096
 }
 resource "local_file" "tf-key" {
 content  = tls_private_key.rsa.private_key_pem
-filename = "tf-key-pair"
+filename = "test"
 }
 # Create EC2 instance
 resource "aws_instance" "nginx_instance" {
@@ -21,7 +21,7 @@ resource "aws_instance" "nginx_instance" {
 
   # Associate security group with the instance
   security_groups = var.security_group_ids
-  key_name = "tf-key-pair"
+  key_name = "test"
   # Provisioning script to install nginx
   user_data = <<-EOF
       #!/bin/bash
